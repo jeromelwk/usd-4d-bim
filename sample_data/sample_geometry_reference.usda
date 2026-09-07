@@ -1,0 +1,91 @@
+#usda 1.0
+(
+    defaultPrim = "Building"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Building"
+{
+    def Mesh "Foundation"
+    {
+        float3[] extent = [(0, 0, -0.3), (10, 8, 0)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+        point3f[] points = [(0, 0, -0.3), (10, 0, -0.3), (10, 8, -0.3), (0, 8, -0.3), (0, 0, 0), (10, 0, 0), (10, 8, 0), (0, 8, 0)]
+    }
+
+    def Xform "Floor1"
+    {
+        def Xform "Walls"
+        {
+            def Mesh "Wall_North"
+            {
+                float3[] extent = [(0, 7.8, 0), (10, 8, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(0, 7.8, 0), (10, 7.8, 0), (10, 8, 0), (0, 8, 0), (0, 7.8, 3), (10, 7.8, 3), (10, 8, 3), (0, 8, 3)]
+            }
+
+            def Mesh "Wall_South"
+            {
+                float3[] extent = [(0, 0, 0), (10, 0.2, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(0, 0, 0), (10, 0, 0), (10, 0.2, 0), (0, 0.2, 0), (0, 0, 3), (10, 0, 3), (10, 0.2, 3), (0, 0.2, 3)]
+            }
+
+            def Mesh "Wall_East"
+            {
+                float3[] extent = [(9.8, 0, 0), (10, 8, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(9.8, 0, 0), (10, 0, 0), (10, 8, 0), (9.8, 8, 0), (9.8, 0, 3), (10, 0, 3), (10, 8, 3), (9.8, 8, 3)]
+            }
+
+            def Mesh "Wall_West"
+            {
+                float3[] extent = [(0, 0, 0), (0.2, 8, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(0, 0, 0), (0.2, 0, 0), (0.2, 8, 0), (0, 8, 0), (0, 0, 3), (0.2, 0, 3), (0.2, 8, 3), (0, 8, 3)]
+            }
+        }
+
+        def Xform "Columns"
+        {
+            def Mesh "Column_1"
+            {
+                float3[] extent = [(2, 2, 0), (2.3, 2.3, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(2, 2, 0), (2.3, 2, 0), (2.3, 2.3, 0), (2, 2.3, 0), (2, 2, 3), (2.3, 2, 3), (2.3, 2.3, 3), (2, 2.3, 3)]
+            }
+
+            def Mesh "Column_2"
+            {
+                float3[] extent = [(7, 6, 0), (7.3, 6.3, 3)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+                point3f[] points = [(7, 6, 0), (7.3, 6, 0), (7.3, 6.3, 0), (7, 6.3, 0), (7, 6, 3), (7.3, 6, 3), (7.3, 6.3, 3), (7, 6.3, 3)]
+            }
+        }
+
+        def Mesh "Slab"
+        {
+            float3[] extent = [(0, 0, 3), (10, 8, 3.2)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+            point3f[] points = [(0, 0, 3), (10, 0, 3), (10, 8, 3), (0, 8, 3), (0, 0, 3.2), (10, 0, 3.2), (10, 8, 3.2), (0, 8, 3.2)]
+        }
+    }
+
+    def Mesh "Roof"
+    {
+        float3[] extent = [(0, 0, 3.2), (10, 8, 3.7)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7]
+        point3f[] points = [(0, 0, 3.2), (10, 0, 3.2), (10, 8, 3.2), (0, 8, 3.2), (0, 0, 3.7), (10, 0, 3.7), (10, 8, 3.7), (0, 8, 3.7)]
+    }
+}
+

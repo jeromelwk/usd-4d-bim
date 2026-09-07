@@ -1,0 +1,13 @@
+# Claude Code local settings (machine/session-specific, not part of the app)
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Logs
+*.log
