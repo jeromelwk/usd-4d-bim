@@ -1,5 +1,7 @@
 # USD 4D BIM
 
+*4D construction sequencing for OpenUSD, with a live 3D preview.*
+
 Méthodologie 4D BIM sur OpenUSD : un layer de géométrie (`geometry.usda`) séparé d'un layer
 de planning (`schedule.usda`, sublayer de la géométrie) qui pilote l'apparition/disparition
 des éléments sur une ligne temporelle (calendrier ou phases). Voir [docs/fourD_schema.md](docs/fourD_schema.md)
