@@ -91,6 +91,22 @@ Modifications apportées par rapport à l'upstream, pour l'intégrer dans l'app 
    l'app hôte de piloter ce réglage depuis son propre menu "Paramètres" plutôt que
    depuis l'UI native du viewer. Voir `frontend/src/components/MenuBar/ViewerSettingsMenu.tsx`.
 
+9. **`src/style.css`** — le `.playbar` natif (scrubber de lecture affiché en
+   superposition dans le viewport par `showPlaybar()`) est forcé en
+   `display: none`. L'app hôte a sa propre timeline (sous la fenêtre 3D,
+   pilotée par `setTime()`), donc le playbar natif ferait doublon avec un
+   second curseur dans la même vue.
+
+10. **`src/app/sceneGraphPanel.ts` / `src/app/layout.ts` / `src/app/automation.ts`** —
+    `setSelection`/`toggleSelectionPath`/`selectPrimByPath` prennent désormais un
+    paramètre optionnel `point` (coordonnées client, relatives au viewport de l'iframe,
+    du clic qui a causé le changement — `null` pour un changement programmatique) ;
+    propagé jusqu'à `onSelectionChange(callback)` sur `window.__USD_WEBVIEW_AUTOMATION__`.
+    Ça permet à l'app hôte de positionner son propre popup d'assignation à proximité
+    du clic réel (dans le viewport ou dans la liste de scène propre au viewer), en
+    ajoutant la position de l'iframe dans la page hôte à ce point. Voir
+    `frontend/src/components/Viewer3D/Viewer3DPanel.tsx`.
+
 ## Reconstruire après une mise à jour de l'upstream ou un nouveau patch
 
 ```powershell

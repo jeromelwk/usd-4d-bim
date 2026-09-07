@@ -11,9 +11,11 @@ export function PrimTreeNode({ node, depth }: { node: PrimNode; depth: number })
   const selected = useScheduleStore((s) => s.selectedPrimPaths.includes(node.path));
   const hasAssignment = useScheduleStore((s) => Boolean(s.assignments[node.path]));
   const togglePrimSelection = useScheduleStore((s) => s.togglePrimSelection);
+  const setSelectionAnchor = useScheduleStore((s) => s.setSelectionAnchor);
 
   function onClick(e: React.MouseEvent) {
     togglePrimSelection(node.path, e.ctrlKey || e.metaKey || e.shiftKey);
+    setSelectionAnchor({ x: e.clientX, y: e.clientY });
   }
 
   return (

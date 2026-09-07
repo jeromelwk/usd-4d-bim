@@ -36,19 +36,20 @@ viewportElement.addEventListener("mouseup", (e) => {
   pickMouseStart = null;
   if (dx * dx + dy * dy > 16) return; // was a drag
   const path = state.viewport.pickPrim(e.clientX, e.clientY);
+  const point = { x: e.clientX, y: e.clientY };
   // Patched for USD 4D BIM: ctrl/cmd/shift-click adds to (or removes from) the
   // current selection instead of replacing it, matching the multi-select
   // convention used by the embedding app's own prim tree.
   const additive = e.ctrlKey || e.metaKey || e.shiftKey;
   if (path) {
     if (additive) {
-      toggleSelectionPath(path);
+      toggleSelectionPath(path, point);
     } else {
-      setSelection([path]);
+      setSelection([path], point);
     }
   } else if (!additive) {
     // click on empty space — deselect (unless accumulating a multi-selection)
-    setSelection([]);
+    setSelection([], point);
   }
 });
 

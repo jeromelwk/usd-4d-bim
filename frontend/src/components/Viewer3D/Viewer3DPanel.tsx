@@ -9,7 +9,9 @@ interface ViewerAutomationApi {
   setTime(timeCode: number): Promise<void>;
   selectPrims(paths: string[]): void;
   clearSelection(): void;
-  onSelectionChange(callback: (primPaths: string[]) => void): () => void;
+  onSelectionChange(
+    callback: (primPaths: string[], point: { x: number; y: number } | null) => void
+  ): () => void;
   setUpAxis(choice: UpAxisChoice): void;
 }
 
@@ -44,6 +46,7 @@ export function Viewer3DPanel() {
   const sessionId = useScheduleStore((s) => s.sessionId);
   const selectedPrimPaths = useScheduleStore((s) => s.selectedPrimPaths);
   const setSelection = useScheduleStore((s) => s.setSelection);
+  const setSelectionAnchor = useScheduleStore((s) => s.setSelectionAnchor);
   const hasSchedule = useScheduleStore((s) => s.hasSchedule);
   const scheduleIsStale = useScheduleStore((s) => s.scheduleIsStale);
   const viewerReloadNonce = useScheduleStore((s) => s.viewerReloadNonce);
@@ -123,11 +126,15 @@ export function Viewer3DPanel() {
       }
       if (!api || generationRef.current !== myGeneration) return;
 
-      unsubscribeRef.current = api.onSelectionChange((paths) => {
+      unsubscribeRef.current = api.onSelectionChange((paths, point) => {
         const key = selectionKey(paths);
         if (key === lastPushedKeyRef.current) return;
         lastReceivedKeyRef.current = key;
         setSelection(paths);
+        if (point) {
+          const rect = iframeRef.current?.getBoundingClientRect();
+          if (rect) setSelectionAnchor({ x: rect.left + point.x, y: rect.top + point.y });
+        }
       });
 
       try {
@@ -192,10 +199,6 @@ export function Viewer3DPanel() {
   return (
     <div className="panel viewer-panel">
       <div className="panel-header viewer-panel-header">
-        <div>
-          <h2>{t.viewer.title}</h2>
-          <p className="hint-text">{t.viewer.hint}</p>
-        </div>
         <span className="hint-text">{statusText}</span>
       </div>
       <iframe

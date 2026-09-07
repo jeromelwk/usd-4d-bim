@@ -41,7 +41,10 @@ export type AutomationApi = {
   // in sync both ways.
   selectPrims(primPaths: string[]): void;
   clearSelection(): void;
-  onSelectionChange(callback: (primPaths: string[]) => void): () => void;
+  // `point` is the viewport-relative client coordinates of the click that
+  // caused the change (null for a programmatic/external selection), so the
+  // embedding app can anchor its own UI near where the user actually clicked.
+  onSelectionChange(callback: (primPaths: string[], point: { x: number; y: number } | null) => void): () => void;
   // Patched for USD 4D BIM: let the embedding app drive the viewport's
   // up-axis choice ("stage" = respect the loaded file's authored up-axis).
   setUpAxis(choice: UpAxisChoice): void;
@@ -92,11 +95,14 @@ export function getAutomationState(): AutomationState {
 // Patched for USD 4D BIM: notify external listeners (the embedding app) when
 // selection changes from inside the viewer (e.g. the user clicked a mesh),
 // with the full current multi-selection.
-const selectionListeners = new Set<(primPaths: string[]) => void>();
+const selectionListeners = new Set<(primPaths: string[], point: { x: number; y: number } | null) => void>();
 
-export function notifyExternalSelection(primPaths: string[]): void {
+export function notifyExternalSelection(
+  primPaths: string[],
+  point: { x: number; y: number } | null = null
+): void {
   for (const listener of selectionListeners) {
-    listener(primPaths);
+    listener(primPaths, point);
   }
 }
 
@@ -219,7 +225,7 @@ window.__USD_WEBVIEW_AUTOMATION__ = {
   clearSelection(): void {
     setSelection([]);
   },
-  onSelectionChange(callback: (primPaths: string[]) => void): () => void {
+  onSelectionChange(callback: (primPaths: string[], point: { x: number; y: number } | null) => void): () => void {
     selectionListeners.add(callback);
     return () => selectionListeners.delete(callback);
   },

@@ -75,8 +75,11 @@ export function clearSceneGraph(): void {
 // Patched for USD 4D BIM: single entry point for every selection change
 // (scene-graph clicks, viewport clicks, and external automation calls), so
 // the prim list highlight, the attributes panel, the 3D highlight, and the
-// automation callback to the embedding app never drift out of sync.
-export function setSelection(paths: string[]): void {
+// automation callback to the embedding app never drift out of sync. `point`
+// (viewport-relative client coordinates of the click that caused this change,
+// when there was one) is forwarded to the embedding app so it can anchor its
+// own assignment popup near the click instead of a fixed screen position.
+export function setSelection(paths: string[], point: { x: number; y: number } | null = null): void {
   const uniquePaths = [...new Set(paths)];
 
   let ancestorsExpanded = false;
@@ -120,19 +123,19 @@ export function setSelection(paths: string[]): void {
   }
 
   state.viewport.setSelectedPrims(uniquePaths);
-  notifyExternalSelection(uniquePaths);
+  notifyExternalSelection(uniquePaths, point);
 }
 
 // Patched for USD 4D BIM: add/remove one path from the current selection,
 // for ctrl/shift-click multi-select (scene-graph list and 3D viewport alike).
-export function toggleSelectionPath(path: string): void {
+export function toggleSelectionPath(path: string, point: { x: number; y: number } | null = null): void {
   const current = state.viewportSelection;
   const next = current.includes(path) ? current.filter((p) => p !== path) : [...current, path];
-  setSelection(next);
+  setSelection(next, point);
 }
 
-export function selectPrimByPath(path: string): void {
-  setSelection([path]);
+export function selectPrimByPath(path: string, point: { x: number; y: number } | null = null): void {
+  setSelection([path], point);
 }
 
 sceneGraphList.addEventListener("click", (e) => {
@@ -163,9 +166,10 @@ sceneGraphList.addEventListener("click", (e) => {
 
   const item = (e.target as Element).closest<HTMLElement>(".sg-item");
   if (!item?.dataset.path) return;
+  const point = { x: e.clientX, y: e.clientY };
   if (e.ctrlKey || e.metaKey || e.shiftKey) {
-    toggleSelectionPath(item.dataset.path);
+    toggleSelectionPath(item.dataset.path, point);
   } else {
-    selectPrimByPath(item.dataset.path);
+    selectPrimByPath(item.dataset.path, point);
   }
 });

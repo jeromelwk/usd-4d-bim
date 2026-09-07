@@ -53,11 +53,6 @@ export async function exportSchedule(sessionId: string, payload: ExportRequest):
   return handle<ExportResponse>(resp);
 }
 
-export async function importSchedule(sessionId: string): Promise<ScheduleStateResponse> {
-  const resp = await fetch(`${BASE}/schedule/import?sessionId=${encodeURIComponent(sessionId)}`);
-  return handle<ScheduleStateResponse>(resp);
-}
-
 export async function uploadSchedule(geometry: File, schedule: File): Promise<ScheduleStateResponse> {
   const form = new FormData();
   form.append("geometry", geometry);

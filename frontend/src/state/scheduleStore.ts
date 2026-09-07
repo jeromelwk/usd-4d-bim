@@ -49,6 +49,9 @@ interface ScheduleStore {
   // Display-only preference for the 3D preview; not part of the saved
   // schedule, persists across sessions in this tab.
   viewerUpAxis: UpAxisChoice;
+  // Page coordinates of the click that produced the current selection (from
+  // the tree or the 3D viewer), used to anchor the assignment popup near it.
+  selectionAnchor: { x: number; y: number } | null;
 
   setSession: (sessionId: string, tree: PrimNode[]) => void;
   setTree: (tree: PrimNode[]) => void;
@@ -63,10 +66,13 @@ interface ScheduleStore {
 
   togglePrimSelection: (path: string, additive: boolean) => void;
   setSelection: (paths: string[]) => void;
+  setSelectionAnchor: (anchor: { x: number; y: number } | null) => void;
   clearSelection: () => void;
 
   bulkAssign: (paths: string[], appear: string, disappear: string | null) => void;
+  updateAssignmentField: (path: string, field: "appear" | "disappear", value: string | null) => void;
   removeAssignment: (path: string) => void;
+  clearAssignments: (paths: string[]) => void;
 
   markScheduleExported: () => void;
   loadFromImport: (state: ScheduleStateResponse) => void;
@@ -87,6 +93,7 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
   scheduleIsStale: false,
   viewerReloadNonce: 0,
   viewerUpAxis: "stage",
+  selectionAnchor: null,
 
   setSession: (sessionId, tree) =>
     set({
@@ -146,7 +153,8 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
       };
     }),
   setSelection: (paths) => set({ selectedPrimPaths: paths }),
-  clearSelection: () => set({ selectedPrimPaths: [] }),
+  setSelectionAnchor: (selectionAnchor) => set({ selectionAnchor }),
+  clearSelection: () => set({ selectedPrimPaths: [], selectionAnchor: null }),
 
   bulkAssign: (paths, appear, disappear) =>
     set((s) => {
@@ -156,10 +164,28 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
       }
       return { assignments: next, scheduleIsStale: s.hasSchedule || s.scheduleIsStale };
     }),
+  updateAssignmentField: (path, field, value) =>
+    set((s) => {
+      const existing = s.assignments[path];
+      if (!existing && field === "disappear") return {};
+      const next = {
+        ...s.assignments,
+        [path]: existing
+          ? { ...existing, [field]: value }
+          : { primPath: path, appear: value ?? "", disappear: null },
+      };
+      return { assignments: next, scheduleIsStale: s.hasSchedule || s.scheduleIsStale };
+    }),
   removeAssignment: (path) =>
     set((s) => {
       const next = { ...s.assignments };
       delete next[path];
+      return { assignments: next, scheduleIsStale: s.hasSchedule || s.scheduleIsStale };
+    }),
+  clearAssignments: (paths) =>
+    set((s) => {
+      const next = { ...s.assignments };
+      for (const path of paths) delete next[path];
       return { assignments: next, scheduleIsStale: s.hasSchedule || s.scheduleIsStale };
     }),
 

@@ -1,12 +1,12 @@
 export const t = {
   app: {
-    title: "Méthodologie 4D — OpenUSD",
-    subtitle: "Séquencement temporel des éléments d'un bâtiment sur une géométrie USD",
+    title: "Planification 4D",
   },
   upload: {
-    button: "Importer un fichier de géométrie (.usda, .usd, .usdc)",
-    dragHint: "Glissez-déposez un fichier ici, ou cliquez pour parcourir",
-    loading: "Analyse du fichier en cours…",
+    geometryLabel: "Géométrie (.usda, .usd, .usdc)",
+    scheduleLabel: "Planning existant (schedule.usda) — optionnel",
+    loadButton: "Charger",
+    loading: "Chargement en cours…",
     error: "Impossible de lire ce fichier USD",
   },
   sample: {
@@ -14,9 +14,7 @@ export const t = {
     loading: "Génération en cours…",
   },
   tree: {
-    title: "Éléments du bâtiment",
     empty: "Aucune géométrie chargée — importez un fichier ou générez un exemple.",
-    selectHint: "Cliquez pour sélectionner, Ctrl/Shift-clic pour une sélection multiple",
     selectedCount: (n: number) => `${n} élément${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}`,
   },
   mode: {
@@ -38,15 +36,12 @@ export const t = {
     empty: "Aucune phase définie — ajoutez-en au moins une.",
   },
   assignment: {
-    title: "Assignation groupée",
     appear: "Apparition",
-    disappear: "Disparition (optionnel)",
+    disappear: "Disparition",
     never: "Ne disparaît jamais",
-    apply: "Appliquer à la sélection",
-    noSelection: "Sélectionnez un ou plusieurs éléments dans l'arbre",
+    clear: "Effacer",
   },
   timeline: {
-    title: "Ligne temporelle",
     empty: "Aucun élément planifié pour le moment",
   },
   export: {
@@ -58,20 +53,10 @@ export const t = {
     downloadSchedule: "Télécharger schedule.usda",
     warning: "Les deux fichiers doivent rester dans le même dossier (référence relative).",
   },
-  import: {
-    title: "Recharger / Importer un schedule existant",
-    reload: "Recharger le schedule de cette session",
-    uploadGeometry: "Fichier geometry.usda",
-    uploadSchedule: "Fichier schedule.usda",
-    button: "Importer",
-    loading: "Import en cours…",
-  },
   errors: {
     generic: "Une erreur est survenue",
   },
   viewer: {
-    title: "Aperçu 3D",
-    hint: "Cliquez un élément pour le sélectionner, Ctrl/Shift-clic pour une sélection multiple",
     loading: "Chargement du visualiseur…",
     ready: "Prêt",
     error: "Erreur de connexion au visualiseur 3D",
@@ -83,7 +68,7 @@ export const t = {
     restart: "Revenir au début",
   },
   menu: {
-    file: "Nouveau fichier",
+    file: "Accueil",
     timeline: "Paramètres temporels",
     export: "Exporter",
     settings: "Paramètres",

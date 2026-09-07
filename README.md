@@ -70,20 +70,23 @@ construite du frontend directement depuis le backend sur le port 8000.
 
 ## Utilisation
 
-1. Cliquer sur "Générer un bâtiment d'exemple" (ou importer un `.usd`/`.usda`/`.usdc`).
-2. La géométrie s'affiche dans l'aperçu 3D (panneau "Aperçu 3D").
-3. Choisir le mode (Calendrier ou Phases) et configurer la plage de dates ou la liste de phases.
-4. Sélectionner un ou plusieurs éléments dans l'arbre (Ctrl/Shift-clic pour une sélection multiple) —
-   la sélection est surlignée en 3D (contour orange), et cliquer un élément dans la vue 3D
-   met à jour la sélection dans l'arbre.
-5. Assigner une apparition/disparition via le panneau "Assignation groupée".
-6. Exporter : télécharge `geometry.usda` + `schedule.usda` (à garder dans le même dossier).
-   L'aperçu 3D recharge alors automatiquement le stage composé (`schedule.usda`,
+1. Cliquer sur "Générer un bâtiment d'exemple" (ou importer un `.usd`/`.usda`/`.usdc`) depuis
+   le menu "Nouveau fichier".
+2. La géométrie s'affiche dans l'aperçu 3D.
+3. Choisir le mode (Calendrier ou Phases) et configurer la plage de dates ou la liste de phases
+   depuis le menu "Paramètres temporels".
+4. Sélectionner un ou plusieurs éléments dans l'arbre (Ctrl/Shift-clic pour une sélection multiple)
+   ou directement dans la vue 3D (la sélection est surlignée en 3D par un contour orange, et reste
+   synchronisée dans les deux sens). Un petit popup apparaît alors en bas à droite pour assigner une
+   apparition/disparition à la sélection courante ("Ne disparaît jamais" par défaut, "Effacer" pour
+   retirer les dates renseignées).
+5. Exporter (menu "Exporter") : télécharge `geometry.usda` + `schedule.usda` (à garder dans le
+   même dossier). L'aperçu 3D recharge alors automatiquement le stage composé (`schedule.usda`,
    qui sublayer `geometry.usda`) et affiche une timeline de lecture sous la vue :
    bouton lecture/pause + curseur, avec la date (mode calendrier) ou la phase
    (mode phases) affichée en regard. Un badge indique si l'aperçu est à jour ou
    si le planning a changé depuis le dernier export (auquel cas il faut
-   réexporter pour le mettre à jour).
-7. "Recharger le schedule de cette session" permet de vérifier le round-trip.
+   réexporter pour le mettre à jour). Les barres du planning (cadre sous l'aperçu 3D)
+   peuvent aussi être ajustées directement à la souris par leurs deux extrémités.
 
 Un fichier d'exemple est disponible dans [sample_data/sample_geometry_reference.usda](sample_data/sample_geometry_reference.usda).

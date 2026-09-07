@@ -147,18 +147,34 @@ h1, h2 {
   font-size: var(--fs-headline-1);
 }
 
-.app-subtitle {
-  color: var(--color-text-muted);
-  font-size: var(--fs-subtitle);
-  margin-top: var(--space-2xs);
-}
-
 /* Menu bar - underline tabs */
 .menu-bar {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-2xl);
   margin-bottom: var(--space-xl);
   border-bottom: 1px solid var(--color-border);
+}
+
+.menu-bar-items {
+  display: flex;
+  gap: var(--space-2xl);
+}
+
+.openusd-logo {
+  height: 22px;
+  width: auto;
+  margin-bottom: var(--space-s);
+  object-fit: contain;
+}
+
+/* The logo asset is the dark-on-transparent variant (for light backgrounds);
+   invert it in dark mode so it stays legible against the dark menu bar. */
+@media (prefers-color-scheme: dark) {
+  .openusd-logo {
+    filter: invert(1);
+  }
 }
 
 .menu-item {
@@ -226,23 +242,11 @@ h1, h2 {
   letter-spacing: 0.04em;
 }
 
-.upload-zone {
-  border: 2px dashed var(--color-border-emphasis);
-  border-radius: var(--radius-m);
-  padding: var(--space-l);
-  width: 100%;
-  text-align: center;
-  cursor: pointer;
-  background: var(--color-bg);
-}
-
-.upload-zone:hover {
-  border-color: var(--color-brand);
-}
-
-.upload-hint {
-  color: var(--color-text-muted);
-  font-size: var(--fs-caption);
+.file-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  align-items: stretch;
 }
 
 .app-main {
@@ -468,7 +472,7 @@ h1, h2 {
 }
 
 .date-range label,
-.assignment-form label {
+.selection-popup label {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
@@ -477,8 +481,8 @@ h1, h2 {
 }
 
 .date-range input,
-.assignment-form input,
-.assignment-form select,
+.selection-popup input,
+.selection-popup select,
 .phase-name-input,
 .phase-add-row input,
 .file-label input {
@@ -519,18 +523,35 @@ h1, h2 {
   flex: 1;
 }
 
-/* Assignment panel */
-.assignment-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-m);
-  align-items: flex-start;
-}
-
 .checkbox-label {
   flex-direction: row !important;
   align-items: center;
   gap: var(--space-xs) !important;
+}
+
+/* Selection popup */
+.selection-popup {
+  position: fixed;
+  z-index: 30;
+  width: 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-l);
+  box-shadow: 0 12px 28px rgba(16, 20, 26, 0.18);
+  padding: var(--space-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  align-items: stretch;
+}
+
+.selection-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--color-text-strong);
 }
 
 /* Gantt */
@@ -553,6 +574,21 @@ h1, h2 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.timeline-range-header {
+  justify-content: space-between !important;
+  margin-bottom: var(--space-l) !important;
+}
+
+.timeline-range-label {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.timeline-range-label-end {
+  text-align: right;
 }
 
 .timeline-axis {
@@ -591,6 +627,28 @@ h1, h2 {
   min-width: 4px;
 }
 
+.gantt-bar-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.gantt-bar-handle-start {
+  left: -4px;
+}
+
+.gantt-bar-handle-end {
+  right: -4px;
+}
+
+.gantt-bar-handle:hover {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-xs);
+}
+
 /* 3D Viewer */
 .viewer-panel {
   padding: 0;
@@ -605,6 +663,7 @@ h1, h2 {
 
 .viewer-panel-header {
   align-items: flex-start !important;
+  justify-content: flex-end !important;
 }
 
 .viewer-panel-header .hint-text {
@@ -697,14 +756,6 @@ h1, h2 {
 .export-links a {
   color: var(--color-brand);
   font-weight: 600;
-}
-
-.import-upload-row {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-m);
-  margin-top: var(--space-m);
-  flex-wrap: wrap;
 }
 
 .file-label {

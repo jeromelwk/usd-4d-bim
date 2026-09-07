@@ -13,12 +13,20 @@ export function computeTotalFrames(mode: Mode, calendar: CalendarConfig, phases:
   return Math.max(phases.length - 1, 0);
 }
 
+export function formatDateDMY(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${d.getFullYear()}`;
+}
+
 export function frameToLabel(mode: Mode, calendar: CalendarConfig, phases: Phase[], frame: number): string {
   if (mode === "calendar") {
     const d = new Date(calendar.projectStart);
     if (Number.isNaN(d.getTime())) return "";
     d.setDate(d.getDate() + Math.round(frame));
-    return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    return formatDateDMY(d.toISOString().slice(0, 10));
   }
   const phase = phases[Math.round(frame)];
   return phase ? phase.name : "";

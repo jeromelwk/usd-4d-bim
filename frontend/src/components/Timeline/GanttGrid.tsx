@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useScheduleStore } from "../../state/scheduleStore";
 import { flattenTree } from "../../utils/tree";
+import { formatDateDMY } from "../../utils/frameMapping";
 import { t } from "../../i18n/fr";
 import { DateAxis } from "./DateAxis";
 import { PhaseAxis } from "./PhaseAxis";
@@ -16,10 +17,15 @@ export function GanttGrid() {
   const nodesByPath = useMemo(() => flattenTree(tree), [tree]);
   const rows = Object.values(assignments).sort((a, b) => a.primPath.localeCompare(b.primPath));
 
+  const rangeStart = mode === "calendar" ? formatDateDMY(calendar.projectStart) : phases[0]?.name ?? "";
+  const rangeEnd =
+    mode === "calendar" ? formatDateDMY(calendar.projectEnd) : phases[phases.length - 1]?.name ?? "";
+
   return (
     <div className="panel">
-      <div className="panel-header">
-        <h2>{t.timeline.title}</h2>
+      <div className="panel-header timeline-range-header">
+        <span className="timeline-range-label">{rangeStart}</span>
+        <span className="timeline-range-label timeline-range-label-end">{rangeEnd}</span>
       </div>
       {rows.length === 0 ? (
         <p className="empty-hint">{t.timeline.empty}</p>
